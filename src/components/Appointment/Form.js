@@ -4,6 +4,8 @@ import Button from "components/Button"
 
 import InterviewerList from "components/InterviewerList"
 
+import {bookInterview} from "components/Application"
+
 export default function Form(props) {
 
   const [name, setName] = useState(props.name || "");
@@ -22,12 +24,14 @@ export default function Form(props) {
   }
 
   function save(name, interviewer) {
-    props.bookInterview(props.id, props.interview);
+   
 
     const interview = {
       student: name,
       interviewer
     };
+
+    bookInterview(props.id, props.interview);
   }
 
 

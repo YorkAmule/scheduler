@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -8,56 +8,19 @@ import DayList from "components/DayList"
 
 import "components/Appointment"
 import Appointment from "components/Appointment";
-import {getAppointmentsForDay, getInterview} from "helpers/selectors.js";
-//import  from "helpers/selectors.js"
+import { getAppointmentsForDay, getInterview } from "helpers/selectors.js";
 
-// const days = [
-//   {
-//     id: 1,
-//     name: "Monday",
-//     spots: 2,
-//   },
-//   {
-//     id: 2,
-//     name: "Tuesday",
-//     spots: 5,
-//   },
-//   {
-//     id: 3,
-//     name: "Wednesday",
-//     spots: 0,
-//   },
-// ];
-
-// const appointments = [
-//   {
-//     id: 1,
-//     time: "12pm",
-//   },
-//   {
-//     id: 2,
-//     time: "1pm",
-//     interview: {
-//       student: "Lydia Miller-Jones",
-//       interviewer: {
-//         id: 1,
-//         name: "Sylvia Palmer",
-//         avatar: "https://i.imgur.com/LpaY82x.png",
-//       }
-//     }
-//   }
-// ];
-
-
-
+export function bookInterview(id, interview) {
+  console.log(id, interview);
+}
 
 
 export default function Application(props) {
 
-  function bookInterview(id, interview) {
-    console.log(id, interview);
-  }
-  
+  // function bookInterview(id, interview) {
+  //   console.log(id, interview);
+  // }
+
   //const[day, setDay] = useState("Monday");
 
   // const [state, setState] = useState({
@@ -66,7 +29,7 @@ export default function Application(props) {
   //   appointments: {},
   //   interviewers: {}
   // });
-  
+
   const [state, setState] = useState({
     day: "",
     days: [],
@@ -79,21 +42,13 @@ export default function Application(props) {
     },
     interviewers: {}
   });
-
-
-
-
-  
-  const setDay = function(day)
-  {
-    setState({...state, day});
+  const setDay = function (day) {
+    setState({ ...state, day });
   }
-
   // const setDays = function(days)
   // {
   //   setState({...state, days});
   // }
-
   useEffect(() => {
     const promise1 = axios.get("/api/days");
     const promise2 = axios.get("/api/appointments");
@@ -115,37 +70,38 @@ export default function Application(props) {
   console.log(getInterview);
   const appointments = array.map(appointment => {
     const interview = getInterview(state, appointment.interview);
-    return (<Appointment 
+    return (<Appointment
       key={appointment.id}
       id={appointment.id}
       time={appointment.time}
       interviewers={interviewers}
-      interview={interview}/>); //appointment.interview
+      interview={interview}
+      bookInterview={bookInterview}/>); //appointment.interview
   });
 
-/* {appointments.map(appointment => <ul><Appointment key={appointment.id} {...appointment} /><Appointment key="last" time="5pm" /></ul>)}  */
+  /* {appointments.map(appointment => <ul><Appointment key={appointment.id} {...appointment} /><Appointment key="last" time="5pm" /></ul>)}  */
 
   return (
     <main className="layout">
       <section className="sidebar">
         <img
-  className="sidebar--centered"
-  src="images/logo.png"
-  alt="Interview Scheduler"
-/>
-<hr className="sidebar__separator sidebar--centered" />
-<nav className="sidebar__menu">
-  <DayList
-  days={state.days}
-  day={state.day}
-  setDay={setDay}
-/>
-  </nav>
-<img
-  className="sidebar__lhl sidebar--centered"
-  src="images/lhl.png"
-  alt="Lighthouse Labs"
-/>
+          className="sidebar--centered"
+          src="images/logo.png"
+          alt="Interview Scheduler"
+        />
+        <hr className="sidebar__separator sidebar--centered" />
+        <nav className="sidebar__menu">
+          <DayList
+            days={state.days}
+            day={state.day}
+            setDay={setDay}
+          />
+        </nav>
+        <img
+          className="sidebar__lhl sidebar--centered"
+          src="images/lhl.png"
+          alt="Lighthouse Labs"
+        />
       </section>
       <section className="schedule">
         {appointments}
@@ -153,7 +109,5 @@ export default function Application(props) {
     </main>
   );
 }
-
-
 //
 //<Appointment id={appointment.id} time={appointment.time} interview={appointment.interview} /><Appointment id="last" time="1pm" />
