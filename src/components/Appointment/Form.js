@@ -10,6 +10,7 @@ export default function Form(props) {
 
   const [name, setName] = useState(props.name || "");
 
+  //console.log(props.interviewer);
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   
   function reset(){
@@ -23,18 +24,18 @@ export default function Form(props) {
     props.onCancel();
   }
 
-  function save(name, interviewer) {
-   
+  function save() {
+    console.log("Saving...");
+    props.onSave(name, interviewer);
+  }
 
-    const interview = {
-      student: name,
-      interviewer
-    };
-
-    bookInterview(props.id, props.interview);
+  function onChange(id) {
+    console.log("onChange:", id);
+    setInterviewer(id);
   }
 
 
+//console.log(props.interviewers);
   return(
     <main className="appointment__card appointment__card--create">
     <section className="appointment__card-left">
@@ -44,17 +45,21 @@ export default function Form(props) {
           name="name"
           type="text"
           placeholder="Enter Student Name"
+          onChange={event => setName(event.target.value)}
           /*
             This must be a controlled component
           */
         />
       </form>
-      <InterviewerList interviewers={props.interviewers} value={interviewer} onChange={props.interviewers.setInterviewer} />
+      <InterviewerList 
+      interviewers={props.interviewers} 
+      interviewer={interviewer} 
+      onChange={onChange} />
     </section>
     <section className="appointment__card-right">
       <section className="appointment__actions">
         <Button onClick={() => cancel()} danger>Cancel</Button>
-        <Button confirm onClick={() => save(props.name, props.interviewer)}>Save</Button>
+        <Button confirm onClick={save}>Save</Button>
       </section>
     </section>
   </main>

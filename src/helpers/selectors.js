@@ -70,6 +70,7 @@ export const getInterview = function (state, interview) {
 
 export const getInterviewersForDay = function (state, dayName) {
   const results = [];
+  // console.log("Calling getInterviewersForDay");
   let dayObj = state.days.find(day => day.name === dayName);
 
   if(!dayObj)
@@ -78,9 +79,9 @@ export const getInterviewersForDay = function (state, dayName) {
   }
   
   for (const interviewer of dayObj.appointments) {
-    results.push(state.appointments[interviewer]);
+    results.push(state.interviewers[interviewer]);
   }
-
+  // console.log("The interviewers are", results);
   return results;
 }
 
@@ -100,4 +101,4 @@ export const getAppointmentsForDay = function (state, dayName) {
     return results;
 }
 
-console.log(getInterviewersForDay(state, "Tuesday"));
+// console.log(getInterviewersForDay(state, "Tuesday"));

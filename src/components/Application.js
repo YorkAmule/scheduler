@@ -8,11 +8,8 @@ import DayList from "components/DayList"
 
 import "components/Appointment"
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors.js";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors.js";
 
-export function bookInterview(id, interview) {
-  console.log(id, interview);
-}
 
 
 export default function Application(props) {
@@ -42,6 +39,7 @@ export default function Application(props) {
     },
     interviewers: {}
   });
+
   const setDay = function (day) {
     setState({ ...state, day });
   }
@@ -58,18 +56,36 @@ export default function Application(props) {
         const days = all[0].data;
         const appointments = all[1].data;
         const interviewers = all[2].data;
-        console.log(interviewers);
+        // console.log(interviewers);
         setState(prev => ({ ...prev, days, interviewers, appointments }));
       })
       .catch(err => console.log(err));
   }, []);
 
+   function bookInterview(id, interview) {
+    console.log("Saving in Application");
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    setState({ ...state, appointments });  
+    
+  
+  }
+
+
 
   const array = getAppointmentsForDay(state, state.day);
-  const interviewers = [];
-  console.log(getInterview);
+  const interviewers = getInterviewersForDay(state, state.day);
+  // console.log("The interviewers are", interviewers);
   const appointments = array.map(appointment => {
     const interview = getInterview(state, appointment.interview);
+    // console.log(interviewers);
     return (<Appointment
       key={appointment.id}
       id={appointment.id}
